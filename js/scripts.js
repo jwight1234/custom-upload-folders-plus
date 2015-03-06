@@ -12,7 +12,7 @@
 	var text_folder_name = $('#jwcuf-user-folder-name');
 	var btn_add_folder = $('#jwcuf-add-folder-btn');
 	var btn_delete = $('.jwcuf-delete-btn');
-	var input_by_file_type = $('#jwcuf-by-file-type-input');
+	var input_by_file_type = $('#jwcuf-by-file-type-input, #jwcuf-by-file-type-default-input');
 	var input_by_user = $('#jwcuf-by-user-input');
 	
 	function init(){

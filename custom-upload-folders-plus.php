@@ -192,14 +192,85 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 		public function register_fields() 
 		{
 			register_setting( 'media', 'jwcuf_select', 'esc_attr' );
-			register_setting( 'media', 'jwcuf_user_folder_name', 'esc_attr' );
-			register_setting( 'media', 'jwcuf_folder_name_default', 'esc_attr' );
-			register_setting( 'media', 'jwcuf_file_types');
+			register_setting( 'media', 'jwcuf_user_folder_name', array( $this, 'validate_folder_builder') );
+			register_setting( 'media', 'jwcuf_file_types', array( $this, 'validate_file_types'));
+			register_setting( 'media', 'jwcuf_folder_name_default', array( $this, 'validate_folder_name_default') );
+			
 
 			add_settings_field(
 				'jwcuf_settings',
 				__( 'Custom Upload Folders', 'jwcuf' ), array( $this, 'jwcuf_settings_page' ), 'media', 'uploads'
 			);
+		}
+
+		/**
+		 * Error checking for file type feilds
+		 */
+		public function validate_folder_builder($input){
+
+			
+			$select = get_option( 'jwcuf_select' );
+
+			if ($select == "by_user") {
+				// check to see if length
+				if ($input == "") {
+					add_settings_error(
+						'jwcuf_validate_folder_builder_input',
+						'jwcuf_validate_folder_builder_error',
+						'Oops, Please fill out Folder Name Builder!',
+						'error'
+					);
+				}
+			}
+
+			return $input;
+
+		}
+
+		public function validate_folder_name_default($input){
+
+			$select = get_option( 'jwcuf_select' );
+
+			if ($select == "by_file_type") {
+				//check to see if feild is empty
+				if ($input == "") {
+					add_settings_error(
+						'jwcuf_folder_name_input',
+						'jwcuf_folder_name_default_error',
+						'Please enter a Default Folder Name',
+						'error'
+					);
+				}
+			}
+
+			return $input;
+
+		}
+
+		/**
+		 * Error checking for file type feilds
+		 */
+		public function validate_file_types($input){
+
+			
+			$select = get_option( 'jwcuf_select' );
+
+			if ($select == "by_file_type") {
+				// check to see if length
+				if (count($input) == 0) {
+					add_settings_error(
+						'jwcuf_validate_file_types_array',
+						'jwcuf_validate_file_types_error',
+						'Oops, Please fill out Folder Name & select a File Extention!',
+						'error'
+					);
+				}else {
+
+				}
+			}
+
+			return $input;
+
 		}
 
 		
