@@ -63,3 +63,7 @@
 	height: 32px;
 	background-color: red;
 }
+
+.jwcuf-error {
+	border-left: 4px solid #dd3d36 !important;
+}

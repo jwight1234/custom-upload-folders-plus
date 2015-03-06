@@ -16,6 +16,8 @@
 	var input_by_user = $('#jwcuf-by-user-input');
 	
 	function init(){
+
+		errors();
 		
 		array_allowed_mime_types = remove_from_array(array_allowed_mime_types, array_used_mime_types);
 	
@@ -239,6 +241,22 @@
 		};
 
 		return array2;
+	}
+
+	function errors(){
+
+		if($('#setting-error-jwcuf_validate_file_types_error').length){
+			$('#jwcuf-by-file-type').find('table').addClass('jwcuf-error');
+		}
+
+		if($('#setting-error-jwcuf_folder_name_default_error').length){
+			$('#jwcuf-by-user').find('table').addClass('jwcuf-error');
+		}
+
+		if($('#setting-error-jwcuf_validate_folder_builder_error').length){
+			$('#jwcuf-by-user').addClass('jwcuf-error');
+		}
+
 	}
 
 	init();
