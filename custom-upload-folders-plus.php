@@ -216,6 +216,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 			$show_hide_by_file_type = ($select == "by_file_type") ? 'jwcuf-show' : 'jwcuf-hide' ;
 			
 			$select_options = array( 
+				'-1'			=> __( '-none-', 'jwcuf' ),
 				'by_user'		=> __( 'By Logged in User', 'jwcuf' ), 
 				'by_file_type'	=> __( 'By File Type', 'jwcuf' )
 			);
@@ -224,9 +225,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 
 			?>
 			
-			<select id="jwcuf-select" name="jwcuf_select">
-			<option value="-1"><?php echo __( '-none-', 'jwcuf' ) ?></option>
-			
+			<select id="jwcuf-select" name="jwcuf_select">			
 			<?php foreach( $select_options as $key => $value ): $selected = selected( $key, $select, false );?>
 				<option value="<?php echo $key; ?>" <?php echo $selected; ?> ><?php echo $value; ?></option>
 			<?php endforeach; ?>
@@ -489,12 +488,18 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 			$array = [];
 			$return_array = [];
 
-			foreach ($file_types as $key => $value) {
-				$array = explode(",", $value);
+			if ($file_types) {			
 
-				foreach ($array as $key => $value) {
-					$return_array[] = array('id' => $value , 'text' => strtoupper($value) );
+				foreach ($file_types as $key => $value) {
+					$array = explode(",", $value);
+
+					foreach ($array as $key => $value) {
+						$return_array[] = array('id' => $value , 'text' => strtoupper($value) );
+					}
 				}
+
+			}else {
+				$return_array = [];
 			}
 
 			return $return_array; 
