@@ -3,12 +3,13 @@
  * Plugin Name: Custom Upload Folders Plus
  * Plugin URI: 
  * Description: Organize the uploads by File Type and Logged in user.
- * Version: .1
+ * Version: 1.0
  * Author: John Wight
  * Author URI: http://wight-space.com/
  * Text Domain: jwcuf
  * Domain Path: /languages/
  * License: GPLv2 or later
+ * Contributor: Rodolfo Buaiz 
  * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU 
  * General Public License version 2, as published by the Free Software Foundation.  You may NOT assume 
@@ -19,10 +20,10 @@
  */
 
 
-if (!class_exists('Jwcuf')) {
+if (!class_exists('Custom_Upload_Folders_Plus')) {
 
 
-	class Jwcuf
+	class Custom_Upload_Folders_Plus
 	{
 		/**
 		 * URL to this plugin's directory.
@@ -550,4 +551,4 @@ if (!class_exists('Jwcuf')) {
 	}
 }
 
-new Jwcuf();
+new Custom_Upload_Folders_Plus();
