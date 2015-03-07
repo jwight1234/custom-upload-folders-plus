@@ -1,7 +1,7 @@
 (function( $ ) {
 	
 	var template = $('#jwcuf-template');
-	var list = $('#jwcuf-list-table');
+	var list = $('#jwcuf-extension-list');
 	var count = 0;
 	var array_user_data = select2_user_data;
 	var array_used_mime_types = select2_used_mime_types;
@@ -12,8 +12,8 @@
 	var text_folder_name = $('#jwcuf-user-folder-name');
 	var btn_add_folder = $('#jwcuf-add-folder-btn');
 	var btn_delete = $('.jwcuf-delete-btn');
-	var input_by_file_type = $('#jwcuf-by-file-type-input, #jwcuf-by-file-type-default-input');
-	var input_by_user = $('#jwcuf-by-user-input');
+	var input_by_file_type = $('#jwcuf-by-file-type-input input, #jwcuf-default-folder-input input');
+	var input_by_user = $('#jwcuf-by-user-input input');
 	
 	function init(){
 
@@ -193,15 +193,15 @@
 		var the_value = $("#jwcuf-select").val();
 
 		if (the_value == 'by_user') {
-			$('#jwcuf-by-user').slideDown();
+			$('#jwcuf-by-user-group').slideDown();
 		} else {
-			$('#jwcuf-by-user').slideUp();
+			$('#jwcuf-by-user-group').slideUp();
 		}
 
 		if (the_value == 'by_file_type') {
-			$('#jwcuf-by-file-type').slideDown();
+			$('#jwcuf-by-file-type-group').slideDown();
 		} else {
-			$('#jwcuf-by-file-type').slideUp();
+			$('#jwcuf-by-file-type-group').slideUp();
 		}
 	}
 
@@ -245,16 +245,23 @@
 
 	function errors(){
 
-		if($('#setting-error-jwcuf_validate_file_types_error').length){
-			$('#jwcuf-by-file-type').find('table').addClass('jwcuf-error');
+		$('#jwcuf-by-file-type-input input, #jwcuf-default-folder-input input');
+
+		if($('#setting-error-jwcuf_validate_file_types').length){
+			$('#jwcuf-by-file-type-input').addClass('jwcuf-error');
+			$('#jwcuf-extension-list').addClass('jwcuf-error');
 		}
 
-		if($('#setting-error-jwcuf_folder_name_default_error').length){
-			$('#jwcuf-by-user').find('table').addClass('jwcuf-error');
+		if($('#setting-error-jwcuf_default_folder_name').length){
+			$('#jwcuf-default-folder-input').addClass('jwcuf-error');
 		}
 
-		if($('#setting-error-jwcuf_validate_folder_builder_error').length){
-			$('#jwcuf-by-user').addClass('jwcuf-error');
+		if($('#setting-error-jwcuf_folder_name_default').length){
+			$('#jwcuf-default-folder-input').addClass('jwcuf-error');
+		}
+
+		if($('#setting-error-jwcuf_validate_folder_builder').length){
+			$('#jwcuf-by-user-input').addClass('jwcuf-error');
 		}
 
 	}

@@ -134,7 +134,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 			
 			if ($select != -1) {
 				
-				$folder_default = (get_option( 'jwcuf_folder_name_default' )) ? get_option( 'jwcuf_folder_name_default' ) : 'general' ;
+				$folder_default = (get_option( 'jwcuf_default_folder_name' )) ? get_option( 'jwcuf_default_folder_name' ) : 'general' ;
 				$uploads_use_yearmonth_folders  = get_option('uploads_use_yearmonth_folders ');
 
 				switch( $select )
@@ -194,7 +194,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 			register_setting( 'media', 'jwcuf_select', 'esc_attr' );
 			register_setting( 'media', 'jwcuf_user_folder_name', array( $this, 'validate_folder_builder') );
 			register_setting( 'media', 'jwcuf_file_types', array( $this, 'validate_file_types'));
-			register_setting( 'media', 'jwcuf_folder_name_default', array( $this, 'validate_folder_name_default') );
+			register_setting( 'media', 'jwcuf_default_folder_name', array( $this, 'validate_folder_name_default') );
 			
 
 			add_settings_field(
@@ -208,16 +208,24 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 		 */
 		public function validate_folder_builder($input){
 
-			
 			$select = get_option( 'jwcuf_select' );
 
 			if ($select == "by_user") {
-				// check to see if length
+				// check form empty field
 				if ($input == "") {
 					add_settings_error(
 						'jwcuf_validate_folder_builder_input',
-						'jwcuf_validate_folder_builder_error',
+						'jwcuf_validate_folder_builder',
 						'Oops, Please fill out Folder Name Builder!',
+						'error'
+					);
+				}
+
+				if ($input == "underscore" || $input == "dash") {
+					add_settings_error(
+						'jwcuf_validate_folder_builder_input',
+						'jwcuf_validate_folder_builder',
+						'Use more than just _ - for a folder name.',
 						'error'
 					);
 				}
@@ -236,7 +244,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 				if ($input == "") {
 					add_settings_error(
 						'jwcuf_folder_name_input',
-						'jwcuf_folder_name_default_error',
+						'jwcuf_default_folder_name',
 						'Please enter a Default Folder Name',
 						'error'
 					);
@@ -260,7 +268,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 				if (count($input) == 0) {
 					add_settings_error(
 						'jwcuf_validate_file_types_array',
-						'jwcuf_validate_file_types_error',
+						'jwcuf_validate_file_types',
 						'Oops, Please fill out Folder Name & select a File Extention!',
 						'error'
 					);
@@ -281,7 +289,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 		{
 			$select = get_option( 'jwcuf_select' );
 			$folder_name = get_option( 'jwcuf_user_folder_name' );
-			$folder_name_default = get_option( 'jwcuf_folder_name_default' );
+			$folder_name_default = get_option( 'jwcuf_default_folder_name' );
 			
 			$show_hide_by_user = ($select == "by_user") ? 'jwcuf-show' : 'jwcuf-hide' ;
 			$show_hide_by_file_type = ($select == "by_file_type") ? 'jwcuf-show' : 'jwcuf-hide' ;
@@ -303,8 +311,9 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 			
 			</select>
 
-			<div id="jwcuf-by-user" class="<?php echo $show_hide_by_user; ?>">
-				<table class="jwcuf-table widefat">
+			<div id="jwcuf-by-user-group" class="<?php echo $show_hide_by_user; ?>">
+				
+				<table id="jwcuf-by-user-input" class="jwcuf-table widefat">
 					<tbody>
 						<tr>
 							<th>Folder Name Builder</th>
@@ -326,9 +335,9 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 
 			<?php $file_types = (get_option( 'jwcuf_file_types' )) ? get_option( 'jwcuf_file_types' ) : [] ; ?>
 
-			<div id="jwcuf-by-file-type" class="<?php echo $show_hide_by_file_type; ?>">
+			<div id="jwcuf-by-file-type-group" class="<?php echo $show_hide_by_file_type; ?>">
 
-				<table class="jwcuf-table widefat">
+				<table id="jwcuf-by-file-type-input" class="jwcuf-table widefat">
 					<tbody>
 						<tr>
 							<th>Folder Name</th>
@@ -336,18 +345,20 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 						</tr>
 						<tr>
 							<td width="50%">					
-								<input id="jwcuf-by-file-type-input" class="widefat" type="text">
+								<input class="widefat" type="text">
 							</td>
 							<td width="50%">
-								<div name="allowed_mime_types" id="jwcuf-by-file-type-allowed-mime-types" class="widefat"></div>
+								<div id="jwcuf-by-file-type-allowed-mime-types" name="allowed_mime_types" class="widefat"></div>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 
 				<button id="jwcuf-add-folder-btn" data-pos="0" class="button">Add Folder</button>
-				<br />			
-				<table id="jwcuf-list-table" class="jwcuf-table wp-list-table widefat">
+				
+				<br />
+				
+				<table id="jwcuf-extension-list" class="jwcuf-table wp-list-table widefat">
 					<tbody>
 						<tr>
 							<th>Folder Path</th>
@@ -360,7 +371,7 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 										<input class="jwcuf-hide" type="hidden" name="jwcuf_file_types[<?php echo $key; ?>]" value="<?php echo $value; ?>">
 										<label><?php echo $this->upload_dir['url'] . '/' . $key; ?></label>
 									</td>
-									<td>
+									<td width="50%">
 										<label> <?php echo $value; ?> </label>
 										<ul class="jwcuf-tools">
 											<li class="jwcuf-delete-btn" data-delete="#jwcuf-<?php echo $key; ?>" data-values="<?php echo $value; ?>">
@@ -374,14 +385,14 @@ if (!class_exists('Custom_Upload_Folders_Plus')) {
 					</tbody>
 				</table>
 				<hr>
-				<table class="jwcuf-table widefat">
+				<table id="jwcuf-default-folder-input" class="jwcuf-table widefat">
 					</tbody>
 						<tr>
 							<th>Default Folder Name</th>
 						</tr>
 						<tr>
 							<td width="100%">
-								<input id="jwcuf-by-file-type-default-input" class="widefat" name="jwcuf_folder_name_default" value="<?php echo $folder_name_default; ?>" type="text">					
+								<input class="widefat" name="jwcuf_default_folder_name" value="<?php echo $folder_name_default; ?>" type="text">					
 								
 							</td>
 						</tr>
