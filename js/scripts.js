@@ -12,7 +12,8 @@
 	var text_folder_name = $('#jwcuf-user-folder-name');
 	var btn_add_folder = $('#jwcuf-add-folder-btn');
 	var btn_delete = $('.jwcuf-delete-btn');
-	var input_by_file_type = $('#jwcuf-by-file-type-input input, #jwcuf-default-folder-input input');
+	var input_by_file_type = $('#jwcuf-by-file-type-input input');
+	var input_default_folder_name = $('#jwcuf-default-folder-input input');
 	var input_by_user = $('#jwcuf-by-user-input input');
 	
 	function init(){
@@ -113,7 +114,6 @@
 					var obj = create_select2_obj_from_array($(input_data));
 
 					array_allowed_mime_types = add_to_array(array_allowed_mime_types, obj);
-					
 
 					$(target).hide("slow", function() {
 						$(this).remove();
@@ -156,7 +156,7 @@
 		});
 
 		// INPUT CHECK
-		input_by_file_type.bind('keypress', function(e) {
+		$('#jwcuf-default-folder-input input, #jwcuf-by-file-type-input input').bind('keypress', function(e) {
 			var regex = new RegExp("^[a-z0-9]+$");
 			var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 
@@ -244,8 +244,6 @@
 	}
 
 	function errors(){
-
-		$('#jwcuf-by-file-type-input input, #jwcuf-default-folder-input input');
 
 		if($('#setting-error-jwcuf_validate_file_types').length){
 			$('#jwcuf-by-file-type-input').addClass('jwcuf-error');
