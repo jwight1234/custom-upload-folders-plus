@@ -1,5 +1,5 @@
 # Custom Upload Folders Plus
-- Platform: Wordpress Plugin
+- Platform: WordPress Plugin
 - Contributors: Rodolfo Buaiz
 - Tags: media, upload, folder, custom upload folders
 - Requires at least: 3.8
