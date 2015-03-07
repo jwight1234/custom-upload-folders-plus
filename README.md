@@ -20,10 +20,12 @@ Go to Settings -> Media and set the desired folder structure.
 The plugin option will be deleted via unsinstall.php.
 
 ### Screenshots
-[![solarized dualmode](https://github.com/jwight1234/custom-upload-folders-plus/blob/master/screenshot-1.png)](#features)
 1. You can organize your media by associating your folder name with mime types
-[![solarized dualmode](https://github.com/jwight1234/custom-upload-folders-plus/blob/master/screenshot-2.png)](#features)
+[![solarized dualmode](https://github.com/jwight1234/custom-upload-folders-plus/blob/master/screenshot-1.png)](#features)
+
 2. You can also organize media via user name, nickname, first name, last name.
+[![solarized dualmode](https://github.com/jwight1234/custom-upload-folders-plus/blob/master/screenshot-2.png)](#features)
+
 
 ### Changelog 
 Version 1.0
