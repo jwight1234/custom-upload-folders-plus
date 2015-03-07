@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Custom Upload Folders Plus
  * Plugin URI: 
- * Description: Organize the uploads by File Type and Logged in user.
+ * Description: Organize file uploads by File Type and Logged in user.
  * Version: 1.0
  * Author: John Wight
  * Author URI: http://wight-space.com/
